@@ -1,0 +1,81 @@
+{% extends 'layout.html'%}
+
+{% block body %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages%}
+<div class="alert colores text-center" id="close">
+    <button type="button" class="close" data-dismiss="alert">&times;</button> 
+    {{ message }}
+</div>
+{% endfor%}
+{% endif %}
+{% endwith%}
+    <div class="row m-5">
+        <div class="col-8 mx-auto"> 
+            <div class="card">
+                <h3 class="card-title text-center">REGISTRAR</h3>
+                <div class="card-body">
+                    <form action="/add_info" method="POST" class="color">
+                        <div class="form-group">
+                            <label for="doc"></label>
+                            <input type="text" id="doc" name="documento" placeholder="Documento" class="form-control" required pattern="[0,9].{6,10}">
+                        </div>
+                        <div class="form-group">
+                            <label for="nom" ></label>
+                            <input required type="text" id="nom" name="nombre" placeholder="Nombre" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="fec"></label>
+                            <input required type="date" id="fec" name="fecha" placeholder="Fecha" class="form-control glyphicon glyphicon-calendar">
+                        </div>
+                        <div class="form-group">
+                            <label for="gen"></label>
+                            <select required name="genero" class="custom-select mb-1 form-control">
+                                <option selected value="" >Seleccione genero</option>
+                                {%for gen in data %}
+                                    <option value="{{data.get(gen)}}">{{data.get(gen)}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group mt-5">
+                            <button type="submit" class="btn btn-success btn-block entry">INGRESAR</button>
+                        </div>
+                    </form>
+                </div>
+            </div>        
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table text-center text-uppercase table-bordered ">
+                <thead class="">
+                    <tr>
+                        <th scope="col">Cédula</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Genéro</th> 
+                        <th scope="col">Operaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for estu in estudiantes %}
+                    <tr>
+                        <td>{{estu.1}}</td>
+                        <td>{{estu.2}}</td>
+                        <td>{{estu.4}}</td>
+                        <td>{{estu.3}}</td>
+                        <td>
+                            <a class="btn btn-primary" href="/update_info/{{estu.0}}"><i class="fa fa-pencil-square" aria-hidden="true"></i></a>
+                            &nbsp;
+                            <a class="btn btn-danger delete" href="/delete_info/{{estu.0}}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}               
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
